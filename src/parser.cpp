@@ -1,9 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <cstddef>
+#include <vector>
+#include <map>
 #include "constantPool.h"
 #include "byteHelper.h"
 #include "methods.h"
+#include "interpreter.h"
 
 using namespace std ;
 
@@ -25,7 +28,7 @@ char* readFile(string fname) {
     return buffer;
 }
 
-string getClassName(ConstantPool cp, char** buffer) {
+string getClassName(char** buffer, ConstantPool cp) {
     u2      thisClassIndex = get(buffer, 2);
     int     thisClassNameIndex = cp.getCP(thisClassIndex).getNum();
     string  thisClassName = cp.getCP(thisClassNameIndex).getString();
@@ -44,9 +47,19 @@ void skipInterface(char** buffer) {
     (*buffer) += size * 2;
 }
 
+map<string, Method> getMethods(char** buffer, ConstantPool cp) {
+	map<string, Method> methods;
+    u2 methodCount = get(buffer, 2);
+    for (int i=0; i<methodCount; i++) {
+        Method m = Method(buffer, cp);
+		methods[m.getName()] = m;
+    }
+	return methods;
+}
+
 int main() {
     
-    char* buffer = readFile("testcases/Test1.class");
+    char* buffer = readFile("testcases/Test5.class");
 
     char* start = buffer;
 
@@ -54,18 +67,16 @@ int main() {
     ConstantPool cp = ConstantPool(&buffer);
 
     buffer += 2;        // skip access flags
-    string tcName = getClassName(cp, &buffer);
+    string tcName = getClassName(&buffer, cp);
 
     buffer += 2;        // skip super class
     buffer += 2;        // skip interface
     buffer += 2;        // skip fields
 
-    MethodTable mt = MethodTable(&buffer);
+	map<string, Method> methods = getMethods(&buffer, cp);
 
-    // skipInterface(&buffer);
-    // skipField(&buffer);  // skip field
-    
-
+	Interpreter interpreter = Interpreter(methods, cp);
+	interpreter.start();
 
 	return 0;
 }

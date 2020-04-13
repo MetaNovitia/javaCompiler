@@ -22,7 +22,7 @@ ConstantPoolInfo::ConstantPoolInfo(u1 newtag, char** buffer, u2 size) {
     tag = newtag;
     for(int i=0; i<size; i++) {
         info.push_back( get(buffer, 1) );
-        printHex(info[i]);
+        // printHex(info[i]);
     }
 }
 
@@ -35,7 +35,7 @@ u8 ConstantPoolInfo::getNum() {
     u2 size = info.size();
 
     if (tag == 1)   cout << "Invoked getNum on String type" << endl;
-    else            for (int i=0; i<size; i++) num += ((u8) info[i] << (4*(size-1-i)));
+    else            for (int i=0; i<size; i++) num += ((u8) info[i] << (8*(size-1-i)));
 
     return num;
 }
@@ -50,12 +50,14 @@ string ConstantPoolInfo::getString() {
     return s;
 }
 
+ConstantPool::ConstantPool() {}
+
 ConstantPool::ConstantPool(char** buffer) {
     u2 constantPoolCount = get(buffer, 2) - 1;
     for (int i=0; i<constantPoolCount; i++) {
-        cout << "CP#" << i+1 << ": ";
+        // cout << "CP#" << i+1 << ": ";
         add(buffer);
-        cout << endl;
+        // cout << endl;
     }
 }
 

@@ -30,7 +30,7 @@ class ConstantPool {
     vector<ConstantPoolInfo> cpinfos;
 
 public:
-
+	ConstantPool();
     ConstantPool(char** buffer);
 
     void add(char** buffer);

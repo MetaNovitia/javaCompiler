@@ -14,10 +14,16 @@ const string hexval = "0123456789abcdef";
 u4 get(char** buffer, int numBytes) {
     u4 result = 0;
     for (int i=0; i <numBytes; i++) {
-        result = result << 4;
+        result = result << 8;
         result += *((*buffer)++);
     }
     return result;
+}
+
+/*  returns bytes as integer 
+    from pos to pos+numBytes-1 */
+int16_t getSigned2(char** buffer) {
+    return (*((*buffer)++) << 8) | *((*buffer)++);
 }
 
 void printHex(char byte) {

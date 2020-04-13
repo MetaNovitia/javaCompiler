@@ -4,8 +4,9 @@
 #include <map>
 #include <iostream>
 #include <vector>
+#include <stack>
 #include "byteHelper.h"
-// #include "attributes.h"
+#include "constantPool.h"
 
 using namespace std;
 
@@ -14,25 +15,40 @@ typedef uint16_t u2;
 typedef uint32_t u4;
 typedef uint64_t u8;
 
-class Method {
-    u2 access_flags;
-    u2 name;
-    u2 descriptor_index;
-    // vector<Attribute> attributes;
-
+class Attribute {
+	string name;
+	char* end;
 public:
-
-    Method(char** buffer);
-
+	Attribute(char** buffer, ConstantPool cp);
+	string getName();
+	void skip(char** buffer);
 };
 
-class MethodTable {
-    vector<Method> methods;
+class CodeAttribute {
+	u2 max_stack;
+	u2 max_locals;
+	char* start;
+	char* end;
 
 public:
+	CodeAttribute();
+	CodeAttribute(char** buffer);
+	char* getStart();
+	char* getEnd();
+};
 
-    MethodTable(char** buffer);
-    Method getMethod(int i);
+class Method {
+    string name;
+	vector<string> params;
+	string returnType;
+	CodeAttribute code;
+public:
+	Method();
+    Method(char** buffer, ConstantPool _cp);
+	string getName();
+	char* getStart();
+	char* getEnd();
+	vector<string> getParams();
 };
 
 #endif
