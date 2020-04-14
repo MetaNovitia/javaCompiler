@@ -11,16 +11,16 @@
 using namespace std ;
 
 char* readFile(string fname) {
-	ifstream inFile(fname);
+    ifstream inFile(fname);
 
     // get size //
-	size_t size = 0;
+    size_t size = 0;
 	inFile.seekg(0, ios::end); 
-	size = inFile.tellg(); 
+    size = inFile.tellg(); 
     char* buffer = new char[size];
 
     // read file //
-	inFile.seekg(0, ios::beg); 
+    inFile.seekg(0, ios::beg); 
     inFile.read(buffer, size);
 
     inFile.close();
@@ -35,18 +35,6 @@ string getClassName(char** buffer, ConstantPool cp) {
     return thisClassName;
 }
 
-void skipInterface(char** buffer) {
-    printHex(**buffer);
-    printHex(*(*buffer+1));
-    u2 size = get(buffer, 2);
-    printHex(**buffer);
-    printHex(*(*buffer + 1));
-    
-    printHex(*(*buffer + 2));
-    printHex(*(*buffer + 3));
-    (*buffer) += size * 2;
-}
-
 map<string, Method> getMethods(char** buffer, ConstantPool cp) {
 	map<string, Method> methods;
     u2 methodCount = get(buffer, 2);
@@ -59,7 +47,7 @@ map<string, Method> getMethods(char** buffer, ConstantPool cp) {
 
 int main() {
     
-    char* buffer = readFile("testcases/Test5.class");
+    char* buffer = readFile("testcases/Test1.class");
 
     char* start = buffer;
 

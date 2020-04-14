@@ -4,32 +4,23 @@
 #include "byteHelper.h"
 #include "constantPool.h"
 
-map<char, string> opStr {
-	{0x2, "iconst_m1"}, {0x3, "iconst_0"}, {0x4, "iconst_1"}, {0x5, "iconst_2"}, 
-	{0x6, "iconst_3"}, {0x7, "iconst_4"}, {0x8, "iconst_5"}, {0x1a, "iload_0"},
-	{0x1b, "iload_1"}, {0x1c, "iload_2"}, {0x1d, "iload_3"}, {0x3b, "istore_0"},
-	{0x3c, "istore_1"}, {0x3d, "istore_2"}, {0x3e, "istore_3"}, {0x60, "iadd"},
-	{0x84, "iinc"}, {0x64, "isub"}, {0x68, "imul"}, {0x78, "ishl"}, 
-	{0x7a, "ishr"}, {0xa0, "if_icmpne"}, {0x9f, "if_icmpeq"}, {0xa3, "if_icmpgt"},
-	{0xa2, "if_icmpge"}, {0xa1, "if_icmplt"}, {0xa4, "if_icmple"}, {0x99, "ifeq"}, 
-	{0x9a, "ifne"}, {0x9d, "ifgt"}, {0x9c, "ifge"}, {0x9b, "iflt"}, {0x9e, "ifle"},
-	{0xa7, "goto"}, {0x10, "bipush"}, {0xb8, "invokestatic"}, {0xb6, "invokevirtual"},
-	{0xb1, "return"}, {0xad, "ireturn"}, {0xb2, "getstatic"}
-};
-
+// FRAME //
 Frame::Frame() {}
 int Frame::size() { return frame.size(); }
+
 int Frame::pop() { int top = frame.top(); frame.pop(); return top; }
 void Frame::push(int value) { frame.push(value); }
+
 int Frame::getLocal(int pos) { return local[pos]; }
 void Frame::addLocal(int value, int pos) { 
-	while (local.size() < pos+1) 
-		local.push_back(0);
+	while (local.size() < pos+1) local.push_back(0);
 	local[pos] = value;
 }
+// FRAME //
 
 bool Interpreter::exec(char** buffer) {
-	string opcode = opStr[get(buffer, 1)];
+	string opcode = opStr[get(buffer, 1)].first;
+
 	// cout << opcode << " " << endl;
 	if 		(opcode == "iconst_m1") 	{	frame.push(-1);							}
 	else if (opcode == "iconst_0") 		{	frame.push(0);							}

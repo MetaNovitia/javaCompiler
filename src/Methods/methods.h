@@ -5,8 +5,10 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <utility>
 #include "byteHelper.h"
 #include "constantPool.h"
+#include "basicBlock.h"
 
 using namespace std;
 
@@ -24,27 +26,20 @@ public:
 	void skip(char** buffer);
 };
 
-class CodeAttribute {
-	u2 max_stack;
-	u2 max_locals;
-	char* start;
-	char* end;
-
-public:
-	CodeAttribute();
-	CodeAttribute(char** buffer);
-	char* getStart();
-	char* getEnd();
-};
-
 class Method {
     string name;
 	vector<string> params;
+	vector<char*> leaders;
+	vector<BasicBlock> blocks;
 	string returnType;
-	CodeAttribute code;
+	char* start;
+	char* end;
 public:
 	Method();
     Method(char** buffer, ConstantPool _cp);
+	void setCode(char** buffer);
+	void setLeaders();
+	void setBlocks();
 	string getName();
 	char* getStart();
 	char* getEnd();
