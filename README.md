@@ -2,5 +2,5 @@
 
 To Run:
 ```
-$ bash run.sh
+$ bash run.sh <path/to/java/class>
 ```

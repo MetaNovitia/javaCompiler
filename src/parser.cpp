@@ -46,8 +46,11 @@ map<string, Method> getMethods(char** buffer, ConstantPool* cp) {
 }
 
 int main() {
+
+	string fname;
+	cin >> fname;
     
-    char* buffer = readFile("testcases/Test1.class");
+    char* buffer = readFile(fname);
 
     char* start = buffer;
 
