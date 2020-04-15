@@ -19,7 +19,7 @@ void Frame::addLocal(int value, int pos) {
 // FRAME //
 
 bool Interpreter::exec(char** buffer) {
-	string opcode = opStr[get(buffer, 1)].first;
+	string opcode = opStr[get(buffer, 1)].name;
 
 	// cout << opcode << " " << endl;
 	if 		(opcode == "iconst_m1") 	{	frame.push(-1);							}

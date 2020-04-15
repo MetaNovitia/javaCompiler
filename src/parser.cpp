@@ -28,14 +28,14 @@ char* readFile(string fname) {
     return buffer;
 }
 
-string getClassName(char** buffer, ConstantPool cp) {
+string getClassName(char** buffer, ConstantPool* cp) {
     u2      thisClassIndex = get(buffer, 2);
-    int     thisClassNameIndex = cp.getCP(thisClassIndex).getNum();
-    string  thisClassName = cp.getCP(thisClassNameIndex).getString();
+    int     thisClassNameIndex = cp->getCP(thisClassIndex).getNum();
+    string  thisClassName = cp->getCP(thisClassNameIndex).getString();
     return thisClassName;
 }
 
-map<string, Method> getMethods(char** buffer, ConstantPool cp) {
+map<string, Method> getMethods(char** buffer, ConstantPool* cp) {
 	map<string, Method> methods;
     u2 methodCount = get(buffer, 2);
     for (int i=0; i<methodCount; i++) {
@@ -55,16 +55,16 @@ int main() {
     ConstantPool cp = ConstantPool(&buffer);
 
     buffer += 2;        // skip access flags
-    string tcName = getClassName(&buffer, cp);
+    string tcName = getClassName(&buffer, &cp);
 
     buffer += 2;        // skip super class
     buffer += 2;        // skip interface
     buffer += 2;        // skip fields
 
-	map<string, Method> methods = getMethods(&buffer, cp);
+	map<string, Method> methods = getMethods(&buffer, &cp);
 
-	Interpreter interpreter = Interpreter(methods, cp);
-	interpreter.start();
+	// Interpreter interpreter = Interpreter(methods, cp);
+	// interpreter.start();
 
 	return 0;
 }

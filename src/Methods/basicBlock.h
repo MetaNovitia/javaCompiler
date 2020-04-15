@@ -6,6 +6,7 @@
 #include <vector>
 #include <stack>
 #include "byteHelper.h"
+#include "value.h"
 
 using namespace std;
 
@@ -22,16 +23,25 @@ class BasicBlock {
 	vector<BasicBlock*> predecessors;
 	vector<BasicBlock*> successors;
 
+	vector<Value*> instructions;
+
 public:
 
-	BasicBlock() {};
-	BasicBlock(char* l, char* e);
+	int num;
+
+	BasicBlock();
+	BasicBlock(int num, char* l, char* e);
 
 	void setNext(BasicBlock* next);
 	void setPrev(BasicBlock* prev);
+	void addInstruction(Value* instr);
+	vector<Value*> getInstructions();
 
 	char* getStart();
 	char* getEnd();
+	vector<BasicBlock*> getNext();
+
+	void printBlock();
 
 };
 
